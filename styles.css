@@ -1,0 +1,172 @@
+html
+{	
+background-color: #FFFFFF;
+color: #000000;
+margin: .5em;
+}
+a:visited {
+color: #992222;
+}
+a:link
+{
+color: #992222;
+}
+a:active
+{
+color: #FF0202;
+}
+a.sub:visited
+{
+font-size: 85%;
+color: #992222;
+}
+a.sub:link
+{
+font-size: 85%;
+color: #992222;
+}
+a.sub:active
+{
+font-size: 85%;
+color: #992222;
+}
+
+body {
+margin:20px 20px 0px 20px;
+}
+
+#main {
+text-align:left;
+width: 800px;
+border-left:1px solid #000000; 
+border-right:1px solid #000000; 
+border-bottom:1px solid #000000;
+border-top:1px solid #000000;
+background:#FFFFFF;
+padding:10px 0px 0px 0px;
+}
+
+#header {
+background:#FFFFFF;
+border-left:1px solid #000000; 
+border-right:1px solid #000000; 
+border-top:1px solid #000000; 
+width: 800px;
+height:100px;
+}
+
+#header #bottom {
+vertical-align:bottom
+}
+
+#main #nav {
+border-right:1px solid #000000; 
+border-bottom:1px solid #000000;
+float:left;
+text-align:left;
+width:150px;
+background:#FFFFFF;
+margin:-10px 20px 20px 0px;
+padding: 1px;
+}
+
+p,h3,h4,pre {
+margin:0px 10px 10px 10px;
+}
+
+h4 {
+font-size:14px;
+padding-top:10px;
+}
+
+#nav p {
+margin-left:10px}
+
+#nav a {
+margin-left:10px}
+
+.fixed {
+	font-family: monospace;
+	font-size: 90%;
+	color: #121212;
+}
+
+h2.title {text-align: center; margin: 10px; font-size: larger}
+h3.login_user {margin-bottom: 0px}
+h3.password_link {text-align: center; font-size: smaller; margin-top: 0px}
+h3.finish_link {text-align: center; font-size: smaller}
+h3.logged-in {text-align: center; font-size: smaller; font-weight: normal; color: #992222}
+h4.table-heading {font-size: smaller; margin: 0px}
+tr.alt-row {background-color: rgb(204, 204, 255)};
+td.left-margin {width: 10px}
+td.left-spacing {width: 40px}
+td.fieldname {text-align: right; font-weight: bold; font-size: smaller}
+td.fieldentry {text-align: left}
+td.login-link {font-size: smaller}
+td.between-buttons {width: 30px}
+td.link {text-align: center; font-weight: bold}
+td.link-text {}
+td.h-space {width: 15px}
+li.error {color: rgb(255, 0, 0)}
+td.table-title {font-weight: bold; font-size: larger; text-align: center}
+td.table-heading {font-weight: bold; text-align: center}
+td.table-entry {font-size:smaller}
+td.table-entry-center {font-size:smaller; text-align: center}
+
+td.optional {text-align: right; font-size: small}
+p.bottom_link {margin-left: 30px; margin-top: 1in; font-size: small}
+p.smaller {font-size: smaller}
+p.successMsg {color: rgb(100, 0, 100)}
+
+td.browse
+		{
+			background-color: #DDDDDD;
+			margin-bottom: 0px;
+			margin-top: 0px;
+			margin-left: 0px;
+			margin-right: 0px;
+			padding-top: 3px;
+			padding-bottom: 1px;
+			padding-left: 3px;
+			padding-right: 3px;
+			border-style: solid;
+			border-bottom-width: 1px;
+			border-top-width: 1px;
+			border-left-width: 1px;
+			border-right-width: 1px;
+			font-size: smaller
+		}
+td.textbody
+		{
+			background-color: #FFFFFF;
+			margin-bottom: 0px;
+			margin-top: 0px;
+			margin-left: 0px;
+			margin-right: 0px;
+			padding-top: 0px;
+			padding-bottom: 0px;
+			padding-left: 0px;
+			padding-right: 8px;
+			font-size: smaller
+		}
+
+span.fixed
+		{
+font-family: monospace;
+font-size: 10pt
+		}
+
+span.fixed-changed
+		{
+font-family: monospace;
+font-size: 10pt;
+color: #0000ff;
+font-weight: bold
+		}
+
+textarea.fixed
+		{
+font-family: monospace;
+font-size: 10pt
+		}
+/**/
