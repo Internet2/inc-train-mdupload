@@ -14,14 +14,8 @@
 <body style="margin: 0px; font-family: sans-serif" class='tundra'>
     <script data-dojo-config="async: 1, parseOnLoad: true, dojoBlankHtmlUrl: '/arcit/blank.html'"
     src="//ajax.googleapis.com/ajax/libs/dojo/1.9.0/dojo/dojo.js"></script>
-    <script src='xmllint.js'></script>
-    <script language="javascript">
 
-require(["dojox/form/Uploader","dojox/form/Manager", "dijit/form/TextBox"], function(){
-    
-});
 
-</script>
 <center>
     
 <!-- header bar -->
