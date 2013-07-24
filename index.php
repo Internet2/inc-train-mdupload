@@ -8,39 +8,18 @@ function special_formatting($input) {
     return str_replace('&nbsp; ', '&nbsp;&nbsp;', $output);
 }
 
-function isUniqueFileName($filename) {
-        if($filename == '') {
-            return false;
-        }
-
-        if($filename == 'Metadata') {  // Prevent use of common default
-            return false;
-        }
-
-        if($filename == 'idp-metadata.xml') { // Prevent use of common default
-            return false;
-        }
-
-        if($filename == 'metadata.xml') { // Prevent use of common default
-            return false;
-        }
-       return true;
-   }
-
-
 function isValidMetadataFile($filename) {
-
+    
         $xmllintCall = "xmllint --noout --schema /opt/xmlschema/saml-schema-metadata-2.0.xsd {$filename}";
 
         exec($xmllintCall, $xmllintOutput, $xmllintFeedback);
 
         if($xmllintFeedback == '0') {
-
             return true;
 
         } else {
-
-             //echo $xmllintOutput;
+            //print_r($xmllintOutput);
+            //print_r($xmllintFeedback);
              return false; 
         }
 
@@ -65,16 +44,28 @@ if(isset($_POST['submit'])){
    if(filesize($_FILES['userfile']['tmp_name']) > $max_filesize)
       $errors .= '<font color=\'red\'>The file you attempted to upload is too large.  Please ensure the file is less than 40k and try again.</font><br/>';
 
-   if(!isUniqueFileName($filename))
-       //die("{file:\"$filename\",type:\"xml\",width:\"\",height:\"\",error:\"you are an idiot\"}");
-      $errors .= '<font color=\'red\'>The filename you chose, "' . $filename . '", is a common default file name for metadata.  Please rename the file to something unique and then reattempt this upload.</font><br/>';
-
-   if(!isValidMetadataFile($_FILES['userfile']['tmp_name']))
-      $errors .= '<font color=\'red\'>The file you are attempting to upload is not valid metadata.  Please correct any errors and try again.</font><br/>';
+   if(!isValidMetadataFile($_FILES['userfile']['tmp_name'])){
+       $errors .= '<font color=\'red\'>The file you are attempting to upload is not valid metadata.  Please correct any errors and try again.</font><br/>';
+   }else{
+       //redefine filename
+       $xml = new XMLReader();
+       if(!$xml ->open($_FILES['userfile']['tmp_name'])){
+           $errors .= "'<font color=\'red\'>Error trying to open XML: ".$_FILES['userfile']['tmp_name'];
+       }
+       
+       $xml ->read();
+       $entityid = $xml->getAttribute("entityID");
+       
+       $url = parse_url($entityid);
+       
+       $filename = $url['host'].".metadata.xml";
+   }
 
    if(!is_writable($upload_path))
       $errors .= '<font color=\'red\'>Something horrible happened.  Please contact the Shibboleth Users list.</font><br/>';
-
+   
+   if(strlen($errors) == 0){
+   
    if(move_uploaded_file($_FILES['userfile']['tmp_name'],$upload_path . $filename))
       {
          echo 'Your metadata was uploaded successfully.  Please proceed to <a href="configure.html">configuration</a> and <a href="test.html">testing</a>. <br /> <br />';                        // It worked
@@ -91,10 +82,15 @@ if(isset($_POST['submit'])){
       } else {
           die('<font color=\'red\'>There was an error during the file upload.  Please try again.</font>');     // It failed
       }
-
+   }
 
 
 } else{
+?>
+
+<?php
+
+}
 ?>
 <html lang="en-US">
 <head>
@@ -117,24 +113,24 @@ if(isset($_POST['submit'])){
 <div id="main">
 
 <!--- start content --->
-
+<div id="errors">
+    <?php
+    echo $errors;
+    ?>
+</div>
 <br />
 <br />
-<form method="post" action="procUpload.php" id="myForm"
+<form method="post" action="index.php" id="myForm"
 enctype="multipart/form-data">
     <fieldset>
         <legend>Metadata Upload</legend>
-        <input name="uploadedfile" type="file" id="uploader"/>
-        <input type="submit" label="Submit" data-dojo-type="dijit/form/Button">
+        <input name="userfile" type="file" id="uploader"/>
+        <input type="submit" label="Submit" name="submit" value="submit">
     </fieldset>
 </form>
 
 </div>
 <br>
-<?php
-
-}
-?>
 <font style="font-size:80%; color:#AAAAAA">&copy; Copyright 2006-2013 Internet2.</font>
 </center>
 
