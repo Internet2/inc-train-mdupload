@@ -30,14 +30,8 @@ function nameFile($filename) {
     
     $entityid = $xml->getAttribute("entityID");
     
-    if(stripos($entityid,"ttp://")> 0){
-        $url = parse_url($entityid);
-        $returnMe = $url['host'] . ".metadata.xml";
-    }
-    else {
-        $returnMe = $entityid;
-    }
-
+    $returnMe = str_replace("/", "-", $entityid).".metadata.xml";
+    
     $xml->close();
     
     return $returnMe;
@@ -126,13 +120,13 @@ if(isset($_POST['submit'])){
 <div id="main">
 
 <!--- start content --->
-<div id="errors">
+<div id="errors" style="padding: 3px">
     <?php
     echo $errors;
     ?>
 </div>
 
-<div id="results">
+<div id="results" style="padding: 3px">
     <?php echo $results; ?>
 </div>
 <br />
