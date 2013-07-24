@@ -8,6 +8,22 @@ function special_formatting($input) {
     return str_replace('&nbsp; ', '&nbsp;&nbsp;', $output);
 }
 
+function nameFile($filename) {
+    $xml = new XMLReader();
+    if (!$xml->open($_FILES['userfile']['tmp_name'])) {
+        die("Error trying to open XML: " . $_FILES['userfile']['tmp_name']);
+    }
+
+    $xml->read();
+    $entityid = $xml->getAttribute("entityID");
+
+    $url = parse_url($entityid);
+
+    $xml->close();
+    
+    return $url['host'] . ".metadata.xml";
+}
+
 function isValidMetadataFile($filename) {
     
         $xmllintCall = "xmllint --noout --schema /opt/xmlschema/saml-schema-metadata-2.0.xsd {$filename}";
@@ -32,7 +48,7 @@ if(isset($_POST['submit'])){
    $max_filesize = 40960;                              // Maximum filesize in BYTES (currently 40KB).
    $upload_path = '/opt/testshib-user-metadata/';                  // The place the files will be uploaded to, don't forget trailing slash '/'
 
-   $filename = $_FILES['userfile']['name'];             // Get the name of the file (including file extension).
+   $filename = nameFile($_FILES['userfile']['tmp_name']);             // create the name of the file based on the entityID
    $ext = substr($filename, strrpos($filename,'.'));      // Get the extension from the filename.
  
    $errors = "";
@@ -46,43 +62,29 @@ if(isset($_POST['submit'])){
 
    if(!isValidMetadataFile($_FILES['userfile']['tmp_name'])){
        $errors .= '<font color=\'red\'>The file you are attempting to upload is not valid metadata.  Please correct any errors and try again.</font><br/>';
-   }else{
-       //redefine filename
-       $xml = new XMLReader();
-       if(!$xml ->open($_FILES['userfile']['tmp_name'])){
-           $errors .= "'<font color=\'red\'>Error trying to open XML: ".$_FILES['userfile']['tmp_name'];
-       }
-       
-       $xml ->read();
-       $entityid = $xml->getAttribute("entityID");
-       
-       $url = parse_url($entityid);
-       
-       $filename = $url['host'].".metadata.xml";
    }
 
    if(!is_writable($upload_path))
       $errors .= '<font color=\'red\'>Something horrible happened.  Please contact the Shibboleth Users list.</font><br/>';
    
-   if(strlen($errors) == 0){
-   
-   if(move_uploaded_file($_FILES['userfile']['tmp_name'],$upload_path . $filename))
-      {
-         echo 'Your metadata was uploaded successfully.  Please proceed to <a href="configure.html">configuration</a> and <a href="test.html">testing</a>. <br /> <br />';                        // It worked
-         echo 'Your metadata filename is <b>' . $filename . '</b>.  Please keep this filename so you can overwrite your metadata file in the event you need to update your entry. <br /><br />';
-         echo 'Your complete metadata is below.  You don\'t need to understand the entire file, but it\'s helpful to recognize your entityID in the first element below, as well as your provider\'s certificate.  <a href="https://wiki.shibboleth.net/confluence/display/SHIB2/Home" target="_new">The Shibboleth wiki</a> can help you <a href="https://wiki.shibboleth.net/confluence/display/SHIB2/Metadata" target="_new">learn about metadata</a>.<br /> <br /> <br /> <p><tt>'; 
+  if (strlen($errors) == 0) {
 
-         // Build display array of metadata
-         exec('xmlstarlet fo -o ' . $upload_path . $filename, $displayMetadata);
-	 foreach ($displayMetadata as $value) {        
-         echo (special_formatting($value) . '<br />');
-         }
-         echo '</tt></p> <br />';
-         shell_exec('sleep 3; sh /opt/cpm.sh'); // Build metadata file after giving a moment to ensure upload completed
-      } else {
-          die('<font color=\'red\'>There was an error during the file upload.  Please try again.</font>');     // It failed
-      }
-   }
+        if (move_uploaded_file($_FILES['userfile']['tmp_name'], $upload_path . $filename)) {
+            echo 'Your metadata was uploaded successfully.  Please proceed to <a href="configure.html">configuration</a> and <a href="test.html">testing</a>. <br /> <br />';                        // It worked
+            echo 'Your metadata filename is <b>' . $filename . '</b>.  Please keep this filename so you can overwrite your metadata file in the event you need to update your entry. <br /><br />';
+            echo 'Your complete metadata is below.  You don\'t need to understand the entire file, but it\'s helpful to recognize your entityID in the first element below, as well as your provider\'s certificate.  <a href="https://wiki.shibboleth.net/confluence/display/SHIB2/Home" target="_new">The Shibboleth wiki</a> can help you <a href="https://wiki.shibboleth.net/confluence/display/SHIB2/Metadata" target="_new">learn about metadata</a>.<br /> <br /> <br /> <p><tt>';
+
+            // Build display array of metadata
+            exec('xmlstarlet fo -o ' . $upload_path . $filename, $displayMetadata);
+            foreach ($displayMetadata as $value) {
+                echo (special_formatting($value) . '<br />');
+            }
+            echo '</tt></p> <br />';
+            shell_exec('sleep 3; sh /opt/cpm.sh'); // Build metadata file after giving a moment to ensure upload completed
+        } else {
+            die('<font color=\'red\'>There was an error during the file upload.  Please try again.</font>');     // It failed
+        }
+    }
 
 
 } else{
@@ -102,9 +104,8 @@ if(isset($_POST['submit'])){
 </head>
 
 
-<body style="margin: 0px; font-family: sans-serif" class='tundra'>
-    <script data-dojo-config="async: 1, parseOnLoad: true, dojoBlankHtmlUrl: '/arcit/blank.html'"
-    src="//ajax.googleapis.com/ajax/libs/dojo/1.9.0/dojo/dojo.js"></script>
+<body style="margin: 0px; font-family: sans-serif">
+    
 <center>
     
 <!-- header bar -->
