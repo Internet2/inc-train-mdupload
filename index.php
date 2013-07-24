@@ -64,7 +64,7 @@ function nameFile($filename) {
 }
 
 function isValidMetadataFile($filename) {
-        return true;
+
         $xmllintCall = "xmllint --noout --schema /opt/xmlschema/saml-schema-metadata-2.0.xsd {$filename}";
 
         exec($xmllintCall, $xmllintOutput, $xmllintFeedback);
