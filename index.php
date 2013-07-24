@@ -38,7 +38,7 @@ function nameFile($filename) {
 }
 
 function isValidMetadataFile($filename) {
-        return true;
+        
         $xmllintCall = "xmllint --noout --schema /opt/xmlschema/saml-schema-metadata-2.0.xsd {$filename}";
 
         exec($xmllintCall, $xmllintOutput, $xmllintFeedback);
@@ -103,7 +103,6 @@ if(isset($_POST['submit'])){
 <html lang="en-US">
 <head>
         <title>TestShib Two</title>
-        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.9.0/dijit/themes/tundra/tundra.css">
         <link rel="stylesheet" type="text/css"
                    href="styles.css"
                    title="styles">
