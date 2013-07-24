@@ -14,7 +14,14 @@ function nameFile($filename) {
         die("Error trying to open XML: " . $_FILES['userfile']['tmp_name']);
     }
 
-    $xml->read();
+    $foundED = false;
+    do{
+        $xml->read();
+        if(stripos($xml->name, "EntityDescriptor") > 0){
+            $foundED = true;
+        }
+    }while(!$foundED);
+    
     $entityid = $xml->getAttribute("entityID");
 
     $url = parse_url($entityid);
@@ -25,7 +32,7 @@ function nameFile($filename) {
 }
 
 function isValidMetadataFile($filename) {
-    
+        return true;
         $xmllintCall = "xmllint --noout --schema /opt/xmlschema/saml-schema-metadata-2.0.xsd {$filename}";
 
         exec($xmllintCall, $xmllintOutput, $xmllintFeedback);
