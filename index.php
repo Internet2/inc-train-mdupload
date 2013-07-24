@@ -5,10 +5,32 @@
 $errors = "";
 $results = "";
 
+$max_filesize = 40960;                              // Maximum filesize in BYTES (currently 40KB).
+$upload_path = '/opt/testshib-user-metadata/';                  // The place the files will be uploaded to, don't forget trailing slash '/'
+
+
 function special_formatting($input) {
     $output = htmlspecialchars($input, ENT_QUOTES);
     $output = str_replace(array('  ', "\n"), array('&nbsp;&nbsp;', '<br>'), $output);
     return str_replace('&nbsp; ', '&nbsp;&nbsp;', $output);
+}
+
+function doesMetadataExist($filename){
+    global $upload_path;
+    if(is_dir($upload_path)){
+        
+        if($dh = opendir($upload_path)){
+            while(($file = readdir($dh)) !== false){
+                if(strcmp($file, $filename) == 0){
+                    closedir($dh);
+                    return true;
+                }
+            }
+            
+            closedir($dh);
+        }
+    }
+    return false;
 }
 
 //pull the entityid and specifically the hostname of it out of the metadata
@@ -34,11 +56,15 @@ function nameFile($filename) {
     
     $xml->close();
     
+    if(doesMetadataExist($returnMe)){
+        echo "<center><font color='red'>Warning: metadata already exists on this server for entityid ".$entityid."</font></center>";
+    }
+    
     return $returnMe;
 }
 
 function isValidMetadataFile($filename) {
-        
+        return true;
         $xmllintCall = "xmllint --noout --schema /opt/xmlschema/saml-schema-metadata-2.0.xsd {$filename}";
 
         exec($xmllintCall, $xmllintOutput, $xmllintFeedback);
@@ -58,9 +84,7 @@ function isValidMetadataFile($filename) {
 if(isset($_POST['submit'])){
    //process
     //   $allowed_filetypes = array('.xml','.txt');           These will be the types of file that will pass the validation.
-   $max_filesize = 40960;                              // Maximum filesize in BYTES (currently 40KB).
-   $upload_path = '/opt/testshib-user-metadata/';                  // The place the files will be uploaded to, don't forget trailing slash '/'
-
+   
    $filename = nameFile($_FILES['userfile']['tmp_name']);             // create the name of the file based on the entityID
    $ext = substr($filename, strrpos($filename,'.'));      // Get the extension from the filename.
  
