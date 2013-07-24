@@ -8,7 +8,10 @@ function special_formatting($input) {
     return str_replace('&nbsp; ', '&nbsp;&nbsp;', $output);
 }
 
+//pull the entityid and specifically the hostname of it out of the metadata
 function nameFile($filename) {
+    $returnMe = "";
+    
     $xml = new XMLReader();
     if (!$xml->open($_FILES['userfile']['tmp_name'])) {
         die("Error trying to open XML: " . $_FILES['userfile']['tmp_name']);
@@ -23,12 +26,18 @@ function nameFile($filename) {
     }while(!$foundED);
     
     $entityid = $xml->getAttribute("entityID");
-
-    $url = parse_url($entityid);
+    
+    if(stripos($entityid,"ttp://")> 0){
+        $url = parse_url($entityid);
+        $returnMe = $url['host'] . ".metadata.xml";
+    }
+    else {
+        $returnMe = $entityid;
+    }
 
     $xml->close();
     
-    return $url['host'] . ".metadata.xml";
+    return $returnMe;
 }
 
 function isValidMetadataFile($filename) {
@@ -78,7 +87,6 @@ if(isset($_POST['submit'])){
 
         if (move_uploaded_file($_FILES['userfile']['tmp_name'], $upload_path . $filename)) {
             echo 'Your metadata was uploaded successfully.  Please proceed to <a href="configure.html">configuration</a> and <a href="test.html">testing</a>. <br /> <br />';                        // It worked
-            echo 'Your metadata filename is <b>' . $filename . '</b>.  Please keep this filename so you can overwrite your metadata file in the event you need to update your entry. <br /><br />';
             echo 'Your complete metadata is below.  You don\'t need to understand the entire file, but it\'s helpful to recognize your entityID in the first element below, as well as your provider\'s certificate.  <a href="https://wiki.shibboleth.net/confluence/display/SHIB2/Home" target="_new">The Shibboleth wiki</a> can help you <a href="https://wiki.shibboleth.net/confluence/display/SHIB2/Metadata" target="_new">learn about metadata</a>.<br /> <br /> <br /> <p><tt>';
 
             // Build display array of metadata
