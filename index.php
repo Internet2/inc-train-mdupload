@@ -1,13 +1,20 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 <?php 
+date_default_timezone_set('America/Denver');
+$current_password = 'CheckWithMe';
 
 $errors = "";
 $results = "";
+$success = false;
 
 $max_filesize = 40960;                              // Maximum filesize in BYTES (currently 40KB).
-$upload_path = '/opt/testshib-user-metadata/';                  // The place the files will be uploaded to, don't forget trailing slash '/'
+$upload_path = '/home/classuser/';                  // The place the files will be uploaded to, don't forget trailing slash '/'
 
+if($_POST['submit'] == 'submit' && $_POST['password'] != $current_password){
+
+	die('<font color=\'red\'>The password you supplied is not valid.</font>');
+}
 
 function special_formatting($input) {
     $output = htmlspecialchars($input, ENT_QUOTES);
@@ -44,13 +51,25 @@ function nameFile($filename) {
 
     $foundED = false;
     do{
-        $xml->read();
-        if(stripos($xml->name, "EntityDescriptor") > 0){
+	try{
+        	if(!$xml->read()){
+			break;
+		}
+	}catch (Exception $e){
+		die("Error parsing metadata: $e");
+		break;
+	}
+
+        if($xml->name === "EntityDescriptor" || $xml->name === "md:EntityDescriptor" ){
             $foundED = true;
         }
     }while(!$foundED);
     
     $entityid = $xml->getAttribute("entityID");
+	
+	if(strlen($entityid) < 3){
+		die("unable to locate entityID");
+	}
     
     $returnMe = str_replace("/", "-", $entityid).".metadata.xml";
     
@@ -65,7 +84,7 @@ function nameFile($filename) {
 
 function isValidMetadataFile($filename) {
 
-        $xmllintCall = "xmllint --noout --schema /opt/xmlschema/saml-schema-metadata-2.0.xsd {$filename}";
+        $xmllintCall = "xmllint  --schema /software/xmlschema/saml-schema-metadata-2.0.xsd {$filename}";
 
         exec($xmllintCall, $xmllintOutput, $xmllintFeedback);
 
@@ -84,7 +103,6 @@ function isValidMetadataFile($filename) {
 if(isset($_POST['submit'])){
    //process
     //   $allowed_filetypes = array('.xml','.txt');           These will be the types of file that will pass the validation.
-   
    $filename = nameFile($_FILES['userfile']['tmp_name']);             // create the name of the file based on the entityID
    $ext = substr($filename, strrpos($filename,'.'));      // Get the extension from the filename.
  
@@ -96,21 +114,15 @@ if(isset($_POST['submit'])){
    }
 
    if(!is_writable($upload_path))
-      $errors .= '<font color=\'red\'>Something horrible happened.  Please contact the Shibboleth Users list.</font><br/>';
+      $errors .= '<font color=\'red\'>Something horrible happened.  Please notify the instructor.</font><br/>';
    
   if (strlen($errors) == 0) {
 
         if (move_uploaded_file($_FILES['userfile']['tmp_name'], $upload_path . $filename)) {
-            $results .= 'Your metadata was uploaded successfully.  Please proceed to <a href="configure.html">configuration</a> and <a href="test.html">testing</a>. <br /> <br />';                        // It worked
-            $results .= 'Your complete metadata is below.  You don\'t need to understand the entire file, but it\'s helpful to recognize your entityID in the first element below, as well as your provider\'s certificate.  <a href="https://wiki.shibboleth.net/confluence/display/SHIB2/Home" target="_new">The Shibboleth wiki</a> can help you <a href="https://wiki.shibboleth.net/confluence/display/SHIB2/Metadata" target="_new">learn about metadata</a>.<br /> <br /> <br /> <p><tt>';
-
-            // Build display array of metadata
-            exec('xmlstarlet fo -o ' . $upload_path . $filename, $displayMetadata);
-            foreach ($displayMetadata as $value) {
-                $results .= (special_formatting($value) . '<br />');
-            }
-            $results .= '</tt></p> <br />';
-            shell_exec('sleep 3; sh /opt/cpm.sh'); // Build metadata file after giving a moment to ensure upload completed
+            $results .= 'Your metadata was uploaded successfully. <br /><br /><div id="processing">Please stand by while we process it...</div> ';                        // It worked
+	    $results .= '<div id="complete" style="display:none">Processing complete.  Please proceed with curriculum.</div><br /><br />';
+	    $success = true;
+            #shell_exec('sleep 3; sh /opt/cpm.sh'); // Build metadata file after giving a moment to ensure upload completed
         } else {
             die('<font color=\'red\'>There was an error during the file upload.  Please try again.</font>');     // It failed
         }
@@ -118,18 +130,19 @@ if(isset($_POST['submit'])){
 
 
 } else{
-?>
-
-<?php
 
 }
 ?>
 <html lang="en-US">
 <head>
-        <title>TestShib Two</title>
-        <link rel="stylesheet" type="text/css"
+<link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<link rel="stylesheet" type="text/css"
                    href="styles.css"
                    title="styles">
+        <title>InCommon Training Metadata Upload</title>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
 </head>
 
 
@@ -139,7 +152,7 @@ if(isset($_POST['submit'])){
     
 <!-- header bar -->
 
-<div id="header"><a href="http://www.shibboleth.net/"><img border="0" align="left" src="testshibtwo.jpg"></a></div>
+<div id="header"><a href="/mdupload/"><img border="0" align="left" src="/images/incommon-training-logo.jpg" alt="incommon training logo"></a></div>
 <div id="main">
 
 <!--- start content --->
@@ -150,12 +163,85 @@ if(isset($_POST['submit'])){
 </div>
 
 <div id="results" style="padding: 3px">
-    <?php echo $results; ?>
+    <?php echo $results; 
+	if($success){
+		?>
+<div class="ui-widget-default">
+    <div id="progressbar" style="height: 20px;"></div>
+</div>	
+	<script type="text/javascript">
+
+//tracks size of metadata file on server
+var etag = '';
+var changedFile = false;
+function checkFileSize(){
+	var url = "/downloads/ShibTrain1-metadata.xml";
+	var xhr = $.ajax({
+		type: "HEAD",
+		url: url,
+		success: function(msg){
+			if(etag === ''){
+				etag = xhr.getResponseHeader('ETag');
+			}
+			if(etag === xhr.getResponseHeader('ETag')){
+				changedFile = false;
+			}
+			else {
+				changedFile = true;
+			}
+		}
+	});
+
+}
+
+//metadata processing monitor
+//metadata is aggregated on the server every 2 minutes
+//spin for 2 minutes checking the metadata file on the server to see if it has changed
+//if it doesn't change, we should probably notify somebody
+$(document).ready(function() {
+    $("#progressbar").progressbar();
+    var tick_interval = 1;
+    var tick_increment = 1.2;
+    var tick_function = function() {
+        var value = $("#progressbar").progressbar("option", "value");
+        value += tick_increment;
+        $("#progressbar").progressbar("option", "value", value);
+        if (value < 100) {
+            window.setTimeout(tick_function, tick_interval * 1500); 
+	    checkFileSize();
+	    if(changedFile){
+		$("#progressbar").progressbar("option","value",100);
+	    }
+        } else {
+	    //change the processing UI to show complete
+	    if(changedFile){
+	    	$("div#processing").toggle();
+	    	$("div#complete").toggle();
+	    }
+	    else {
+		//it's been 2 minutes & we haven't detected a change
+		alert("We have failed to detect the application of your metadata.  Please notify an instructor.");
+	    }
+        }
+    };
+    window.setTimeout(tick_function, tick_interval * 1500);
+});
+</script>
+<?php 
+	}
+
+?>
 </div>
 <br />
 <br />
 <form method="post" action="index.php" id="myForm"
 enctype="multipart/form-data">
+<p>
+Check with an instructor for the current password.  
+<p>
+<label for="password">Password: </label>
+<input type="password" name="password" />
+</p>
     <fieldset>
         <legend>Metadata Upload</legend>
         <input name="userfile" type="file" id="uploader"/>
@@ -165,7 +251,7 @@ enctype="multipart/form-data">
 
 </div>
 <br>
-<font style="font-size:80%; color:#AAAAAA">&copy; Copyright 2006-2013 Internet2.</font>
+<font style="font-size:80%; color:#AAAAAA">&copy; Copyright 2006-<?php echo date("Y"); ?> Internet2.</font>
 </center>
 
 </body>
