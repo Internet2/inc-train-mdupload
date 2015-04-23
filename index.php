@@ -18,7 +18,7 @@ You may obtain a copy of the License at
 */
 
 date_default_timezone_set('America/Denver');
-$current_password = 'CheckWithMe';
+$current_password = 'XXXXXXXXX';
 
 $errors = "";
 $results = "";
