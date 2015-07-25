@@ -24,6 +24,8 @@ $errors = "";
 $results = "";
 $success = false;
 
+$xmlout = "";
+
 $max_filesize = 40960;                              // Maximum filesize in BYTES (currently 40KB).
 $upload_path = '/home/classuser/';                  // The place the files will be uploaded to, don't forget trailing slash '/'
 
@@ -100,16 +102,15 @@ function nameFile($filename) {
 
 function isValidMetadataFile($filename) {
 
-        $xmllintCall = "xmllint --schema /software/xmlschema/sstc-saml-metadata-ui-v1.0.xsd --schema /software/xmlschema/saml-schema-metadata-2.0.xsd {$filename}";
+        $xmllintCall = "xmllint --schema /software/xmlschema/sstc-saml-metadata-ui-v1.0.xsd --schema /software/xmlschema/saml-schema-metadata-2.0.xsd {$filename} 2>&1";
 
-        exec($xmllintCall, $xmllintOutput, $xmllintFeedback);
+        global $xmlout;
+        exec($xmllintCall, $xmlout, $xmllintFeedback);
 
         if($xmllintFeedback == '0') {
             return true;
 
         } else {
-            //print_r($xmllintOutput);
-            //print_r($xmllintFeedback);
              return false; 
         }
 
@@ -123,14 +124,14 @@ if(isset($_POST['submit'])){
    $ext = substr($filename, strrpos($filename,'.'));      // Get the extension from the filename.
  
    if(filesize($_FILES['userfile']['tmp_name']) > $max_filesize)
-      $errors .= '<font color=\'red\'>The file you attempted to upload is too large.  Please ensure the file is less than 40k and try again.</font><br/>';
+      $errors .= '<span style="color: red; ">The file you attempted to upload is too large.  Please ensure the file is less than 40k and try again.</span><br/>';
 
    if(!isValidMetadataFile($_FILES['userfile']['tmp_name'])){
-       $errors .= '<font color=\'red\'>The file you are attempting to upload is not valid metadata.  Please correct any errors and try again.</font><br/>';
+       $errors .= '<span style="color: red; "><p>The file you are attempting to upload is not valid metadata.  Please correct any errors and try again.</p><p>'.$xmlout[2].'</p></span><br/>';
    }
 
    if(!is_writable($upload_path))
-      $errors .= '<font color=\'red\'>Something horrible happened.  Please notify the instructor.</font><br/>';
+      $errors .= '<span style="color: red; ">Something horrible happened.  Please notify the instructor.</span><br/>';
    
   if (strlen($errors) == 0) {
 
@@ -138,9 +139,9 @@ if(isset($_POST['submit'])){
             $results .= 'Your metadata was uploaded successfully. <br /><br /><div id="processing">Please stand by while we process it...</div> ';                        // It worked
 	    $results .= '<div id="complete" style="display:none">Processing complete.  Please proceed with curriculum.</div><br /><br />';
 	    $success = true;
-            #shell_exec('sleep 3; sh /opt/cpm.sh'); // Build metadata file after giving a moment to ensure upload completed
+
         } else {
-            die('<font color=\'red\'>There was an error during the file upload.  Please try again.</font>');     // It failed
+            die('<span style="color: red; ">There was an error during the file upload.  Please try again.</span>');     // It failed
         }
     }
 
