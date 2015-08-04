@@ -165,7 +165,7 @@ if(isset($_POST['submit'])){
 
 <body style="margin: 0px; font-family: sans-serif">
     
-<center>
+<div style="text-align: center;">
     
 <!-- header bar -->
 
@@ -268,8 +268,8 @@ Check with an instructor for the current password.
 
 </div>
 <br>
-<font style="font-size:80%; color:#AAAAAA">&copy; Copyright 2006-<?php echo date("Y"); ?> Internet2.</font>
-</center>
+<span style="font-size:80%; color:#AAAAAA">&copy; Copyright 2006-<?php echo date("Y"); ?> Internet2.</span>
+</div>
 
 </body>
 </html>
