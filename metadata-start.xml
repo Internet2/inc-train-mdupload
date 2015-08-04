@@ -1,0 +1,172 @@
+<EntitiesDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               Name="urn:mace:example.org" validUntil="2019-12-01T00:00:00Z" cacheDuration="PT1M" 
+               xsi:schemaLocation="urn:oasis:names:tc:SAML:2.0:metadata saml-schema-metadata-2.0.xsd urn:mace:shibboleth:metadata:1.0 shibboleth-metadata-1.0.xsd http://www.w3.org/2000/09/xmldsig# xmldsig-core-schema.xsd">
+
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" ID="_aed3c2ffd5f7867b7d3b3ca515b175511a5b6b68" entityID="https://sp.training.incommon.org/shibboleth">
+
+  <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:1.1:protocol urn:oasis:names:tc:SAML:1.0:protocol">
+    <md:Extensions>
+      <init:RequestInitiator xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Binding="urn:oasis:names:tc:SAML:profiles:SSO:request-init" Location="https://sp.training.incommon.org/Shibboleth.sso/Login"/>
+      <idpdisc:DiscoveryResponse xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol" Binding="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol" Location="https://sp.training.incommon.org/Shibboleth.sso/Login" index="1"/>
+    </md:Extensions>
+    <md:KeyDescriptor>
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:KeyName>i2midev3.internet2.edu</ds:KeyName>
+        <ds:X509Data>
+          <ds:X509SubjectName>CN=i2midev3.internet2.edu</ds:X509SubjectName>
+          <ds:X509Certificate>MIIDCTCCAfGgAwIBAgIJAOxBayP6EsXtMA0GCSqGSIb3DQEBBQUAMCExHzAdBgNV
+BAMTFmkybWlkZXYzLmludGVybmV0Mi5lZHUwHhcNMTEwNTEwMjE0NTE2WhcNMjEw
+NTA3MjE0NTE2WjAhMR8wHQYDVQQDExZpMm1pZGV2My5pbnRlcm5ldDIuZWR1MIIB
+IjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA00T4ae9H85RHxoEp/vztk3iE
+NUqHa+SYsw0Pv+w31oEe6dYGdVycKo7EkA9OO58Wgg6X/N2VBi8b85duLleU9xbd
+kmCTEbP7IF3NedWbqmZEZJzZ5CeEBRw2HZxHSVPwv3YoXgG0BuEexHvMZYybnSoZ
+pMwVF4XW6rvoMbcT3gsl/Jsh9S01IEWIopHH4sK13001RZdqAkvi/LH+LAI/VXvv
+HqwQJ6LR199aAhX9S6SxBr/kXIkyWaLteafdPa+QDLufm6i+DrxRJ60WX9AgjJKd
+d4KZifspQY4whVuBLLUnRS0A85dL8Dq/bBGyY6rvZp3R5yPfEwANoTWV5Dw7iQID
+AQABo0QwQjAhBgNVHREEGjAYghZpMm1pZGV2My5pbnRlcm5ldDIuZWR1MB0GA1Ud
+DgQWBBT3bdSNKboWXsr2bKPzFsR96cUCXzANBgkqhkiG9w0BAQUFAAOCAQEAAcse
+Lc78nHwRdCj9FNmT0jzxqyPX4eb3bXY0TFfBlQB0LBEz08EbCTR0QDxQInqesqOM
+IFmBlkTfjcsJ+i5uqtmRXtHFUQPPbatJeecYSjY8uXU5TkrBM31P6VetbJwOoi/T
+eZtyPLI3uP6jKAhpK3PqRQz5q9yLGlmnDwkzP80himN+gHtKEl/qkZdteuBeLJ+b
+/eSnEKltbJVS+Ssc06xHN9W14VzE1onq7SdVTdiqkE7cSKmG65BVjTSZycjj4PJK
+bZ74v8ro9WiMFKquvemvn/9mB8xTkzIxEFcsz9rrLO5tjF66u3oyWQDnpmOxK30r
+XqqaDUYkDsjWJRvY/w==
+</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:ArtifactResolutionService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://sp.training.incommon.org/Shibboleth.sso/Artifact/SOAP" index="0"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://sp.training.incommon.org/Shibboleth.sso/SLO/SOAP"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://sp.training.incommon.org/Shibboleth.sso/SLO/Redirect"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://sp.training.incommon.org/Shibboleth.sso/SLO/POST"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://sp.training.incommon.org/Shibboleth.sso/SLO/Artifact"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://sp.training.incommon.org/Shibboleth.sso/SAML2/POST" index="0"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://sp.training.incommon.org/Shibboleth.sso/SAML2/POST-SimpleSign" index="1"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://sp.training.incommon.org/Shibboleth.sso/SAML2/Artifact" index="2"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="https://sp.training.incommon.org/Shibboleth.sso/SAML2/ECP" index="3"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:browser-post" Location="https://sp.training.incommon.org/Shibboleth.sso/SAML/POST" index="4"/>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:1.0:profiles:artifact-01" Location="https://sp.training.incommon.org/Shibboleth.sso/SAML/Artifact" index="5"/>
+  </md:SPSSODescriptor>
+
+</md:EntityDescriptor>
+
+<EntityDescriptor entityID="https://idp.training.incommon.org/idp/shibboleth"
+                  xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+                  xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+                  xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <IDPSSODescriptor protocolSupportEnumeration="urn:mace:shibboleth:1.0 urn:oasis:names:tc:SAML:1.1:protocol urn:oasis:names:tc:SAML:2.0:protocol">
+
+        <Extensions>
+            <shibmd:Scope regexp="false">example.org</shibmd:Scope>
+        </Extensions>
+
+        <KeyDescriptor>
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>
+MIIDTzCCAjegAwIBAgIUEzBjKIZN2CwS5I5Obk02EaTsbOQwDQYJKoZIhvcNAQEF
+BQAwJDEiMCAGA1UEAxMZaWRwLnRyYWluaW5nLmluY29tbW9uLm9yZzAeFw0xMTA1
+MTIyMTI3MTlaFw0zMTA1MTIyMTI3MTlaMCQxIjAgBgNVBAMTGWlkcC50cmFpbmlu
+Zy5pbmNvbW1vbi5vcmcwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDM
+ZSnVww43W/Hn3n1XKEKvKXYPEUwc6Rg+00GJIVlaZwNmMirVCSRsDa6pyhB2rHB6
+D3vPPqXOsVMENW1GjFQtH4ouR0ueso2ZPvV8rKGe8dyWJ0IQCJ8JrbHydQnt7Xil
+8onk4Z1OZm3HB3rV9NzwGeGQY24KYEjXBbhCjSdcQVcPL87R4iHwxTMbKdwFENZq
+5lXspNHhqqDHP0sFcGM6rstgaTkD2iLJyQIHWjl9gRTqdjcfEGhUb2LanZtn4o3K
+wSvBFeu3WWS1+b4gYx69msEGyfM7TcjSShujm2whr+D50nJdq7NJkH+7fDbhfwjR
+7u+j83PsV+zNLDgEytCfAgMBAAGjeTB3MFYGA1UdEQRPME2CGWlkcC50cmFpbmlu
+Zy5pbmNvbW1vbi5vcmeGMGh0dHBzOi8vaWRwLnRyYWluaW5nLmluY29tbW9uLm9y
+Zy9pZHAvc2hpYmJvbGV0aDAdBgNVHQ4EFgQUq6Cc6dZ7ucjubdaEJnc7+6K7TU8w
+DQYJKoZIhvcNAQEFBQADggEBAJXuP61EFTxg/g1bi5iGtwX97oULbAFWzJd/8DgU
+Ul6O5IkI2TGE9mkuK1bPgSvgOwSRid3/er8NDyegyE6a/nAKsV4JCWk+0FlLX8jB
+iHyvSUswHqo4oOlubYrNiyre8f0AUG9jUTWUoM4xVGtcwhsHcP/FDHf79+DLFXde
+gsY/G6HYKJidHzQgwPIw2J6CPGvKbYt556cZopQXN2qa7y2+4ZF2wm3y3S9L0JGG
+Bg5/MzEmu+UZEFTPHrf1p77wmphXCfg1r+6tBoILGpzq9hwp6t+gfP+r7NPiRofH
+PzvJGPwJTnvS8K7m4G6x64klEOfOGF3fpQo9TfuXdyjK4/E=
+
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </KeyDescriptor>
+        
+        <ArtifactResolutionService Binding="urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding"
+                                   Location="https://idp.training.incommon.org:8443/idp/profile/SAML1/SOAP/ArtifactResolution" 
+                                   index="1"/>
+
+        <ArtifactResolutionService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+                                   Location="https://idp.training.incommon.org:8443/idp/profile/SAML2/SOAP/ArtifactResolution" 
+                                   index="2"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp.training.incommon.org/idp/profile/SAML2/Redirect/SLO" />
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp.training.incommon.org/idp/profile/SAML2/POST/SLO" />
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://idp.training.incommon.org/idp/profile/SAML2/POST-SimpleSign/SLO" />
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://idp.training.incommon.org/idp/profile/SAML2/SOAP/SLO" />                           
+        <NameIDFormat>urn:mace:shibboleth:1.0:nameIdentifier</NameIDFormat>
+        <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+
+        <SingleSignOnService Binding="urn:mace:shibboleth:1.0:profiles:AuthnRequest" 
+                             Location="https://idp.training.incommon.org/idp/profile/Shibboleth/SSO" />
+        
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" 
+                             Location="https://idp.training.incommon.org/idp/profile/SAML2/POST/SSO" />
+
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" 
+                             Location="https://idp.training.incommon.org/idp/profile/SAML2/POST-SimpleSign/SSO" />
+        
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" 
+                             Location="https://idp.training.incommon.org/idp/profile/SAML2/Redirect/SSO" />
+    </IDPSSODescriptor>
+
+    <AttributeAuthorityDescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:1.1:protocol urn:oasis:names:tc:SAML:2.0:protocol">
+
+        <Extensions>
+            <shibmd:Scope regexp="false">example.org</shibmd:Scope>
+        </Extensions>
+
+        <KeyDescriptor>
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>
+MIIDTzCCAjegAwIBAgIUEzBjKIZN2CwS5I5Obk02EaTsbOQwDQYJKoZIhvcNAQEF
+BQAwJDEiMCAGA1UEAxMZaWRwLnRyYWluaW5nLmluY29tbW9uLm9yZzAeFw0xMTA1
+MTIyMTI3MTlaFw0zMTA1MTIyMTI3MTlaMCQxIjAgBgNVBAMTGWlkcC50cmFpbmlu
+Zy5pbmNvbW1vbi5vcmcwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDM
+ZSnVww43W/Hn3n1XKEKvKXYPEUwc6Rg+00GJIVlaZwNmMirVCSRsDa6pyhB2rHB6
+D3vPPqXOsVMENW1GjFQtH4ouR0ueso2ZPvV8rKGe8dyWJ0IQCJ8JrbHydQnt7Xil
+8onk4Z1OZm3HB3rV9NzwGeGQY24KYEjXBbhCjSdcQVcPL87R4iHwxTMbKdwFENZq
+5lXspNHhqqDHP0sFcGM6rstgaTkD2iLJyQIHWjl9gRTqdjcfEGhUb2LanZtn4o3K
+wSvBFeu3WWS1+b4gYx69msEGyfM7TcjSShujm2whr+D50nJdq7NJkH+7fDbhfwjR
+7u+j83PsV+zNLDgEytCfAgMBAAGjeTB3MFYGA1UdEQRPME2CGWlkcC50cmFpbmlu
+Zy5pbmNvbW1vbi5vcmeGMGh0dHBzOi8vaWRwLnRyYWluaW5nLmluY29tbW9uLm9y
+Zy9pZHAvc2hpYmJvbGV0aDAdBgNVHQ4EFgQUq6Cc6dZ7ucjubdaEJnc7+6K7TU8w
+DQYJKoZIhvcNAQEFBQADggEBAJXuP61EFTxg/g1bi5iGtwX97oULbAFWzJd/8DgU
+Ul6O5IkI2TGE9mkuK1bPgSvgOwSRid3/er8NDyegyE6a/nAKsV4JCWk+0FlLX8jB
+iHyvSUswHqo4oOlubYrNiyre8f0AUG9jUTWUoM4xVGtcwhsHcP/FDHf79+DLFXde
+gsY/G6HYKJidHzQgwPIw2J6CPGvKbYt556cZopQXN2qa7y2+4ZF2wm3y3S9L0JGG
+Bg5/MzEmu+UZEFTPHrf1p77wmphXCfg1r+6tBoILGpzq9hwp6t+gfP+r7NPiRofH
+PzvJGPwJTnvS8K7m4G6x64klEOfOGF3fpQo9TfuXdyjK4/E=
+
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </KeyDescriptor>
+
+        <AttributeService Binding="urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding" 
+                          Location="https://idp.training.incommon.org:8443/idp/profile/SAML1/SOAP/AttributeQuery" />
+        
+        <AttributeService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+                          Location="https://idp.training.incommon.org:8443/idp/profile/SAML2/SOAP/AttributeQuery" />
+        
+        <NameIDFormat>urn:mace:shibboleth:1.0:nameIdentifier</NameIDFormat>
+        <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+        
+    </AttributeAuthorityDescriptor>
+    <Organization>
+      <OrganizationName xml:lang="en">InCommon Training</OrganizationName>
+      <OrganizationDisplayName xml:lang="en">InCommon Training IdP</OrganizationDisplayName>
+      <OrganizationURL xml:lang="en">http://www.incommon.org</OrganizationURL>
+    </Organization> 
+</EntityDescriptor>  
+
+
+
