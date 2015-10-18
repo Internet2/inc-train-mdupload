@@ -101,6 +101,12 @@ function nameFile($filename) {
 }
 
 function isValidMetadataFile($filename) {
+	
+	#sanitize the width/heightInPixels issue
+        $str = file_get_contents($filename);
+        $str = str_replace("HeightInPixels","0",$str);
+        $str = str_replace("WidthInPixels","0",$str);
+        file_put_contents($filename, $str);
 
         $xmllintCall = "xmllint --schema /software/xmlschema/sstc-saml-metadata-ui-v1.0.xsd --schema /software/xmlschema/saml-schema-metadata-2.0.xsd {$filename} 2>&1";
 
