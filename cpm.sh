@@ -10,6 +10,7 @@
 #
 # Note: This script requires the existence of var metadata directories for now.
 #
+NEWDATE=$(date +%Y-%m-%dT00:00:00Z -d "14 days")
 
 rm -rf /var/metadatafile/ShibTrain1-metadata.xml
 rm -rf /var/metadatafiles/*
@@ -19,6 +20,7 @@ cp /home/classuser/* /var/metadatafiles/
 cat /var/metadatafile/metadata-start.xml >> /var/metadatafile/ShibTrain1-metadata.xml
 cat /var/metadatafiles/* >> /var/metadatafile/ShibTrain1-metadata.xml
 cat /var/metadatafile/metadata-end.xml >> /var/metadatafile/ShibTrain1-metadata.xml
+xmlstarlet ed --inplace -O -P -N x="urn:oasis:names:tc:SAML:2.0:metadata" -u "//x:EntitiesDescriptor/@validUntil" -v "$NEWDATE" /var/metadatafile/ShibTrain1-metadata.xml
 #cp /var/metadatafile/ShibTrain1-metadata.xml /opt/shibboleth-idp/metadata/
 #cp /var/metadatafile/ShibTrain1-metadata.xml /opt/shibboleth-ds/metadata/
 #cp /var/metadatafile/ShibTrain1-metadata.xml /etc/shibboleth/
